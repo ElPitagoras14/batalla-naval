@@ -447,7 +447,7 @@ generarFyC proc
     mov bl, 0Ah
     div bl
 
-    add ah, 41h    ;Convierto a numero ascii el resto
+    add ah, 30h    ;Convierto a numero ascii el resto
     mov dh, ah
 
     xor ah, ah  ;Limpio AH para la division de 8bits
