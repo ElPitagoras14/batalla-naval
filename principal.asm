@@ -17,19 +17,24 @@
             db "| 4 | . | . | . | . | . | . |", 0ah, 0dh
             db "| 5 | . | . | . | . | . | . |", 0ah, 0dh
             db "| 6 | . | . | . | . | . | . |", 0ah, 0dh
-            db "x---------------------------x", 0ah, 0dh, 0ah, 0dh, 24h
+            db "x---------------------------x", 0ah, 0dh, 0ah, 0dh, 24h  
+            
+     
+    
 .code
 .start
 
 xor ax, ax
 xor bx, bx
 xor cx, cx
-xor dx, dx
+xor dx, dx  
+
 
 jmp imprimir
 
 main:
 
+                                          
 get_pos:
     mov ah, 09h         
     lea dx, msg_ing
@@ -41,11 +46,15 @@ get_pos:
     
     mov ah, 01h         ;funcion para captura de dato NUM
     int 21h
-    mov bl, al
+    mov bl, al   
+    
+    jmp ale_1al6
     
     jmp rango
     
-rango:
+rango: 
+
+    
     cmp bh, 46h
     jnle error_ing
     cmp bh, 41h
@@ -55,10 +64,65 @@ rango:
     cmp bl, 31h
     jnge error_ing
     ;imprimir dato correcto
-    jmp setear
+    jmp setear 
+    
+ale_1al6:
+    mov ah, 0h ;interrupcion para obtener el tiempo del sistema
+    int 1AH     ;pulso del reloj guardado en dx
+    
+    mov ax, dx  ;mueve el valor de dx a ax
+    xor dx, dx   ;setea el valor de dx a 1
+    mov cx, 6   ;cx= 6 divisor que genera un numero entre 1 y 6
+    div cx      ;divide ax por cx, bx=6 y dx=1 
+    
+    add dl, '1' 
+    mov ah, 2h
+    int 21h 
+    
+ale_1al4: 
+    mov ah, 00h ;interrupcion para obtener el tiempo del sistema
+    int 1AH 
+    
+    mov ax, dx
+    xor dx, dx
+    mov cx, 4
+    div cx
+    
+    add dl, '1' 
+    mov ah, 2h
+    int 21h 
+
+ale_1al3: 
+    mov ah, 00h ;interrupcion para obtener el tiempo del sistema
+    int 1AH 
+    
+    mov ax, dx
+    xor dx, dx
+    mov cx, 3
+    div cx
+    
+    add dl, '1' 
+    mov ah, 2h
+    int 21h 
+    
+ale_1al2:
+    mov ah, 00h ;interrupcion para obtener el tiempo del sistema
+    int 1AH 
+    
+    mov ax, dx
+    xor dx, dx
+    mov cx, 2
+    div cx
+    
+    add dl, '1'     
+    mov ah, 2h
+    int 21h
+
+    
+  
     
 error_ing:
-    ;imprimir dato incorrecto
+    ;imprimir dato incorrecto  
     jmp get_pos
 
 setear:
