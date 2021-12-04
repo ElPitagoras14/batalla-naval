@@ -142,7 +142,7 @@ principal proc                   ;Proceso principal que se encarga de la logica 
         mov byte ptr [bx + di], "0"  ;Cambiamos el valor de la posicion (Fila,Columna) a "0"
         mov cl, vida                 ;Obtenemos el valor de vida (Intentos)
         cmp cl, 20                   ;Comparamos con 20 (Valor que indica fin de intentos)
-        je perdedor                  ;Si es igual salta a perdedor
+        jge perdedor                  ;Si es igual salta a perdedor
         call imprimir                ;Llama a imprimir para mostrar el tablero
         jmp get_pos                  ;Salta a get_pos
         
@@ -170,16 +170,16 @@ principal proc                   ;Proceso principal que se encarga de la logica 
         jmp get_pos                  ;Salta a get_pos
     
     ganador:                         ;Funcion que muestra mensaje al ganar
-        mov ah, 09h                  ;Valor para interrupcion
-        lea dx, cmp_tab              ;Cargamos cmp_tab en DX
-        int 21h                      ;Interrupcion par amostrar por pantalla
+        call imprimir
         mov ah, 09h                  ;Valor para interrupcion
         lea dx, msg_ganador          ;Cargamos msg_ganador en DX
         int 21h                      ;Interrupcion par amostrar por pantalla
         jmp salir_principal          ;Salta a salir_principal
         
     perdedor:                        ;Funcion que muestra mensaje al ganar
-        call imprimir                ;Muestra el tablero
+        mov ah, 09h                  ;Valor para interrupcion
+        lea dx, cmp_tab              ;Cargamos cmp_tab en DX
+        int 21h                      ;Interrupcion par amostrar por pantalla
         mov ah, 09h                  ;Valor para interrupcion
         lea dx, msg_perdedor         ;Cargamos msg_perdedor en DX
         int 21h                      ;Interrupcion par amostrar por pantalla
